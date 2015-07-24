@@ -27,6 +27,14 @@ enum {
     NUMBER_OF_ELEMENTS
 };
 
+static const char* elements[NUMBER_OF_ELEMENTS] = {
+    "Earth",
+    "Water",
+    "Fire",
+    "Wind", /* "metal" in the Chinese Wu Xing */
+    "Void", /* "wood" in the Chinese Wu Xing */
+};
+
 static const GLfloat colors[NUMBER_OF_ELEMENTS][NUMBER_OF_COMPONENTS] = {
     { 1, 1, 0, OPACITY, }, /* "Yellow Dragon" (earth, center) */
     { 0, 0, 1, OPACITY, }, /* "Black Tortoise" (water, north) */
@@ -36,5 +44,7 @@ static const GLfloat colors[NUMBER_OF_ELEMENTS][NUMBER_OF_COMPONENTS] = {
 };
 
 extern int counts[NUMBER_OF_ELEMENTS];
+
+extern int primary_element(long year);
 
 #endif
