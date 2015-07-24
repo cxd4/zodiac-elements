@@ -6,19 +6,19 @@
  * solar signs
  */
 enum {
-    ARIES,
+    ARIES, /* cardinal, spring */
     TAURUS,
     GEMINI,
 
-    CANCER,
+    CANCER, /* cardinal, summer */
     LEO,
     VIRGO,
 
-    LIBRA,
+    LIBRA, /* cardinal, autumn */
     SCORPIO,
     SAGITTARIUS,
 
-    CAPRICORN,
+    CAPRICORN, /* cardinal, winter */
     AQUARIUS,
     PISCES,
 
