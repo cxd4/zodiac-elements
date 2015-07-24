@@ -8,25 +8,29 @@
 
 #include "elements.h"
 #include "input.h"
+#include "signs.h"
 
 int counts[NUMBER_OF_ELEMENTS];
 
 int main(int argc, char ** argv)
 {
-    long input;
+    long year;
     int output;
 
     if (argc < 2)
         fputs("Enter year (negative for B.C.):  ", stdout);
-    input = (argc < 2)
+    year = (argc < 2)
       ? scan_long()
       : strtol(argv[1], NULL, 0)
     ;
-    output = primary_element(input);
+    output = primary_element(year);
     ++counts[output];
-
     printf("Annual element   :  %s\n", elements[output]);
-    printf("Fixed element    :  %s\n", "to do...");
+
+    output = fixed_element(year);
+    ++counts[output];
+    printf("Fixed element    :  %s\n", elements[output]);
+
     printf("Ascendant element:  %s\n", "to do...");
     printf("Lunar element    :  %s\n", "to do...");
     return 0;
@@ -60,5 +64,37 @@ int primary_element(long year)
  */
     default:
         return EARTH;
+    }
+}
+
+int fixed_element(long year)
+{
+    int index;
+
+    index = (int)(year % 12);
+    index = (12 + index) % 12; /* in case of negative or "B.C." years */
+
+    index += 8; /* offsets Monkey, Rooster, Dog... to Rat, Ox, Tiger... */
+    switch (index %= 12) {
+    case BOAR:
+    case RAT:
+    case OX:
+        return WATER;
+    case TIGER:
+    case RABBIT:
+    case DRAGON:
+        return WOOD;
+    case SNAKE:
+    case HORSE:
+    case SHEEP:
+        return FIRE;
+     /* return EARTH; */
+    case MONKEY:
+    case ROOSTER:
+    case DOG:
+        return METAL;
+
+    default:
+        return EARTH; /* unreachable -- used for balance or unknowns */
     }
 }

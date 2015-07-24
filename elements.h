@@ -46,5 +46,6 @@ static const GLfloat colors[NUMBER_OF_ELEMENTS][NUMBER_OF_COMPONENTS] = {
 extern int counts[NUMBER_OF_ELEMENTS];
 
 extern int primary_element(long year);
+extern int fixed_element(long year);
 
 #endif
