@@ -87,6 +87,6 @@ enum {
 
 GLvoid init_GL_state(void);
 void display(void);
-void reshape(GLint width, GLint height);
+void reshape(GLsizei width, GLsizei height);
 
 #endif

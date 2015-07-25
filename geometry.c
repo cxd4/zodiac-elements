@@ -77,10 +77,21 @@ void display(void)
     return;
 }
 
-void reshape(GLint width, GLint height)
+void reshape(GLsizei width, GLsizei height)
 {
+    static GLint viewport[4];
+    GLsizei new_size;
+
 /*
- * haven't yet implemented window resizing of the picture image
+ * Force square screen dimensions only, as window sizes amounting to a
+ * non-square render viewport will make the pentagon disproportionate.
  */
+    new_size = (width < height) ? width : height;
+
+    glGetIntegerv(
+        GL_VIEWPORT,
+        &viewport[0]
+    );
+    glViewport(viewport[0], viewport[1], new_size, new_size);
     return;
 }
