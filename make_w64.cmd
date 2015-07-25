@@ -10,8 +10,8 @@ set libs=/LIBPATH:"%DDK%\lib\crt\%target%" /LIBPATH:"%DDK%\lib\wnet\%target%"
 
 set src=%CD%
 set C_FLAGS=/W4 /MD /O1 /Os /Oi /GS- /TC
-set files=%src%\elements.c %src%\input.c
+set files=%src%\elements.c %src%\geometry.c %src%\input.c
 
-%MSVC%\cl.exe %incl% %C_FLAGS% %files% /link %libs%
+%MSVC%\cl.exe %incl% %C_FLAGS% %files% /link %libs% opengl32.lib glut32.lib
 
 pause

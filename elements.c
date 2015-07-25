@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include <GL/glut.h>
-#include <GL/gl.h>
+#include "geometry.h"
 
 #include "elements.h"
 #include "input.h"
@@ -40,6 +40,8 @@ int main(int argc, char ** argv)
       : strtoul(argv[3], NULL, 0)
     ;
 
+    glutInit(&argc, argv);
+
     element = primary_element(year);
     ++counts[element];
     printf("Annual element   :  %s\n", elements[element]);
@@ -56,10 +58,19 @@ int main(int argc, char ** argv)
     ++counts[element];
     printf("Lunar element    :  %s\n", elements[element]);
 
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_ALPHA);
+    glutInitWindowSize(256, 256);
+    glutCreateWindow("OpenGL Viewport:  Elemental Chart");
+
+    init_GL_state();
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+
     printf(
         "Elemental concentration:  %s\n",
         elements[get_ultimate_element(&counts[0])]
     );
+    glutMainLoop();
     return 0;
 }
 
