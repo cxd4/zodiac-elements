@@ -41,7 +41,10 @@ GLvoid init_GL_state(void)
     glEnable(GL_BLEND);
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_LINE_SMOOTH);
+
     glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     glVertexPointer(NUMBER_OF_COORDINATES, GL_DOUBLE, 0, vertices);
     glColorPointer(NUMBER_OF_COMPONENTS, GL_FLOAT, 0, colors);
