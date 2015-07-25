@@ -51,7 +51,10 @@ int main(int argc, char ** argv)
     ++counts[element];
     printf("Ascendant element:  %s\n", elements[element]);
 
-    printf("Lunar element    :  %s\n", "to do...");
+    element = lunar_element(sign);
+    ++counts[element];
+    printf("Lunar element    :  %s\n", elements[element]);
+
     return 0;
 }
 
@@ -158,6 +161,49 @@ int ascendant_element(unsigned long hour)
         return fixed_element(DOG + offset);
     case 21:
     case 22: /* North (Water):  9:00 PM to 11:00 PM (Pig) */
+        return fixed_element(BOAR + offset);
+
+    default:
+        return EARTH; /* unreachable -- used for balance or unknowns */
+    }
+}
+
+int lunar_element(unsigned long sign)
+{
+    const int offset = -8; /* Year 0 is Monkey (#8), not Rat (#1). */
+
+    sign -= 1; /* Offset 1:12 to 0:11. */
+/*
+ * The below method of lunar sign calculation is taken from:
+ * "The Handbook of Chinese Horoscopes" by Theodora Lau
+ *
+ * Seems that many times, usually just the month number is cared about,
+ * rather than the solar sign from the Western Aries-Pisces zodiac.
+ */
+    switch (sign %= 12) {
+    case SAGITTARIUS:
+        return fixed_element(RAT + offset);
+    case CAPRICORN:
+        return fixed_element(OX + offset);
+    case AQUARIUS:
+        return fixed_element(TIGER + offset);
+    case PISCES:
+        return fixed_element(RABBIT + offset);
+    case ARIES:
+        return fixed_element(DRAGON + offset);
+    case TAURUS:
+        return fixed_element(SNAKE + offset);
+    case GEMINI:
+        return fixed_element(HORSE + offset);
+    case CANCER:
+        return fixed_element(SHEEP + offset);
+    case LEO:
+        return fixed_element(MONKEY + offset);
+    case VIRGO:
+        return fixed_element(ROOSTER + offset);
+    case LIBRA:
+        return fixed_element(DOG + offset);
+    case SCORPIO:
         return fixed_element(BOAR + offset);
 
     default:

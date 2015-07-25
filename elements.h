@@ -48,5 +48,6 @@ extern int counts[NUMBER_OF_ELEMENTS];
 extern int primary_element(long year);
 extern int fixed_element(long year);
 extern int ascendant_element(unsigned long hour);
+extern int lunar_element(unsigned long sign);
 
 #endif
