@@ -6,10 +6,10 @@
 static GLdouble vertices[POLYGON_DEPTH][NUMBER_OF_COORDINATES];
 
 static const GLfloat colors[NUMBER_OF_ELEMENTS][NUMBER_OF_COMPONENTS] = {
-    { 1, 1, 0, OPACITY, }, /* "Yellow Dragon" (earth, center) */
     { 0, 0, 1, OPACITY, }, /* "Black Tortoise" (water, north) */
-    { 1, 0, 0, OPACITY, }, /* "Vermillion Bird" (fire, south) */
     { 1, 1, 1, OPACITY, }, /* "White Tiger" (metal, west) */
+    { 1, 1, 0, OPACITY, }, /* "Yellow Dragon" (earth, center) */
+    { 1, 0, 0, OPACITY, }, /* "Vermillion Bird" (fire, south) */
     { 0, 1, 0, OPACITY, }, /* "Green Dragon" (wood, east) */
 };
 

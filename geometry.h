@@ -54,12 +54,12 @@
  * This is so the perfect pentagon faces upwards instead of to the right.
  *
  * Triangle Sum Theorem:  angle_A + angle_B + angle_C = 180 [degrees]
- * So the rotation angle should be 180 - x - (right_angle = 90).
+ * So the rotation angle should be 180 - (x = 0) - (right_angle = 90).
  */
 #define COMPLIMENT(degrees)     ((RIGHT_ANGLE_DEGREES) - (degrees))
 #define SUPPLEMENT(degrees)     ((DEGREES_PER_TRIANGLE) - (degrees))
 #define INTERVAL                SUPPLEMENT(DEGREES_PER_ANGLE)
-#define ROTATION                COMPLIMENT(INTERVAL)
+#define ROTATION                COMPLIMENT(0)
 
 #define BACK_PLANE              -1
 #define DONT_CARE               0
