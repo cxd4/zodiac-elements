@@ -9,6 +9,8 @@
 #include "signs.h"
 
 int counts[NUMBER_OF_ELEMENTS];
+int final_element = EARTH;
+
 static int get_ultimate_element(const int * count_table);
 
 int main(int argc, char ** argv)
@@ -58,16 +60,13 @@ int main(int argc, char ** argv)
 
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_ALPHA);
     glutInitWindowSize(256, 256);
-    glutCreateWindow("OpenGL Viewport:  Elemental Chart");
+    glutCreateWindow("OpenGL Viewport:  Elements");
 
     init_GL_state();
+    final_element = get_ultimate_element(&counts[0]);
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
 
-    printf(
-        "Elemental concentration:  %s\n",
-        elements[get_ultimate_element(&counts[0])]
-    );
     glutMainLoop();
     return 0;
 }

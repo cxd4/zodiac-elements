@@ -40,7 +40,7 @@
 
 #include "elements.h"
 #define RADIUS                  1.0
-#define POLYGON_DEPTH           NUMBER_OF_ELEMENTS
+#define POLYGON_DEPTH           NUMBER_OF_VERTICES
 
 #define RIGHT_ANGLE_DEGREES     90
 
@@ -59,7 +59,7 @@
 #define COMPLIMENT(degrees)     ((RIGHT_ANGLE_DEGREES) - (degrees))
 #define SUPPLEMENT(degrees)     ((DEGREES_PER_TRIANGLE) - (degrees))
 #define INTERVAL                SUPPLEMENT(DEGREES_PER_ANGLE)
-#define ROTATION                COMPLIMENT(0)
+#define ROTATION                COMPLIMENT(INTERVAL - INTERVAL)
 
 #define BACK_PLANE              -1
 #define DONT_CARE               0

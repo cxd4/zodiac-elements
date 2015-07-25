@@ -5,12 +5,17 @@
 
 static GLdouble vertices[POLYGON_DEPTH][NUMBER_OF_COORDINATES];
 
-static const GLfloat colors[NUMBER_OF_ELEMENTS][NUMBER_OF_COMPONENTS] = {
+static const GLfloat colors[NUMBER_OF_ELEMENTS + 3][NUMBER_OF_COMPONENTS] = {
     { 0, 0, 1, OPACITY, }, /* "Black Tortoise" (water, north) */
     { 1, 1, 1, OPACITY, }, /* "White Tiger" (metal, west) */
     { 1, 1, 0, OPACITY, }, /* "Yellow Dragon" (earth, center) */
     { 1, 0, 0, OPACITY, }, /* "Vermillion Bird" (fire, south) */
     { 0, 1, 0, OPACITY, }, /* "Green Dragon" (wood, east) */
+
+    { 1/2.F, 0, 1/2.F, OPACITY }, /* "Purple Emperor" (X is controlled by Y.) */
+    { 1, 0, 1, OPACITY, }, /* magenta (X controls Y.) */
+
+    { 1, 1, 1, 1 }, /* system default to the OpenGL state machine */
 };
 
 GLvoid init_GL_state(void)
@@ -78,10 +83,50 @@ void display(void)
       | GL_STENCIL_BUFFER_BIT
     );
     glEnableClientState(GL_VERTEX_ARRAY);
-    glColor4f(1, 1, 1, 1);
+    glColor4fv(colors[NUMBER_OF_ELEMENTS + 2]);
 
     glDisableClientState(GL_COLOR_ARRAY);
     glDrawArrays(GL_LINE_LOOP, 0, POLYGON_DEPTH);
+
+    glBegin(GL_LINE_STRIP);
+    glColor4fv(colors[NUMBER_OF_ELEMENTS + 0]);
+    switch (final_element) {
+    case WATER:
+        glVertex4dv(vertices[EARTH_VERTEX]);
+        glColor4fv(colors[WATER_VERTEX]);
+        glVertex4dv(vertices[WATER_VERTEX]);
+        glColor4fv(colors[NUMBER_OF_ELEMENTS + 1]);
+        glVertex4dv(vertices[FIRE_VERTEX]);
+        break; /* Earth controls Water; Water controls Fire. */
+    case FIRE:
+        glVertex4dv(vertices[WATER_VERTEX]);
+        glColor4fv(colors[FIRE_VERTEX]);
+        glVertex4dv(vertices[FIRE_VERTEX]);
+        glColor4fv(colors[NUMBER_OF_ELEMENTS + 1]);
+        glVertex4dv(vertices[METAL_VERTEX]);
+        break; /* Water controls Fire; Fire controls Metal. */
+    case METAL:
+        glVertex4dv(vertices[FIRE_VERTEX]);
+        glColor4fv(colors[METAL_VERTEX]);
+        glVertex4dv(vertices[METAL_VERTEX]);
+        glColor4fv(colors[NUMBER_OF_ELEMENTS + 1]);
+        glVertex4dv(vertices[WOOD_VERTEX]);
+        break; /* Fire controls Metal; Metal controls Wood. */
+    case WOOD:
+        glVertex4dv(vertices[METAL_VERTEX]);
+        glColor4fv(colors[WOOD_VERTEX]);
+        glVertex4dv(vertices[WOOD_VERTEX]);
+        glColor4fv(colors[NUMBER_OF_ELEMENTS + 1]);
+        glVertex4dv(vertices[EARTH_VERTEX]);
+        break; /* Metal controls Wood; Wood controls Earth. */
+    default:
+        glVertex4dv(vertices[WOOD_VERTEX]);
+        glColor4fv(colors[EARTH_VERTEX]);
+        glVertex4dv(vertices[EARTH_VERTEX]);
+        glColor4fv(colors[NUMBER_OF_ELEMENTS + 1]);
+        glVertex4dv(vertices[WATER_VERTEX]);
+    }
+    glEnd();
 
     glEnableClientState(GL_COLOR_ARRAY);
     glDrawArrays(GL_POINTS, 0, POLYGON_DEPTH);

@@ -19,7 +19,26 @@ static const char* elements[NUMBER_OF_ELEMENTS] = {
     "Void", /* "wood" in the Chinese Wu Xing */
 };
 
+/*
+ * the conducive cycle of the five elements:
+ *     1.  Metal supports/produces Water.
+ *     2.  Water supports/produces Wood.
+ *     3.  Wood supports/produces Fire.
+ *     4.  Fire supports/produces Earth.
+ *     5.  Earth supports/produces Metal.
+ */
+enum {
+    WATER_VERTEX,
+    METAL_VERTEX,
+    EARTH_VERTEX,
+    FIRE_VERTEX,
+    WOOD_VERTEX,
+
+    NUMBER_OF_VERTICES
+};
+
 extern int counts[NUMBER_OF_ELEMENTS];
+extern int final_element;
 
 extern int primary_element(long year);
 extern int fixed_element(long year);
