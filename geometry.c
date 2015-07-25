@@ -17,6 +17,7 @@ GLvoid init_GL_state(void)
 {
     GLfloat point_size_limits[2];
     GLfloat point_size;
+    double distance_between_polygon_and_screen_boundary;
     register size_t vertex_ID;
 
     for (vertex_ID = 0; vertex_ID < POLYGON_DEPTH; vertex_ID++) {
@@ -25,6 +26,17 @@ GLvoid init_GL_state(void)
         vertices[vertex_ID][Z] = PLANE_Z;
         vertices[vertex_ID][W] = 1.0 / RADIUS;
     }
+
+/*
+ * Now drop the pentagon lower, slightly, to vertically center it on the
+ * screen and minimize the chance of rendering outside the OpenGL canvas.
+ */
+    distance_between_polygon_and_screen_boundary = 1 + vertices[FIRE][Y];
+    for (vertex_ID = 0; vertex_ID < POLYGON_DEPTH; vertex_ID++)
+        vertices[vertex_ID][Y] -=
+            distance_between_polygon_and_screen_boundary
+          / 2
+        ;
 
     glEnable(GL_BLEND);
     glEnable(GL_ALPHA_TEST);
