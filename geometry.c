@@ -15,6 +15,8 @@ static const GLfloat colors[NUMBER_OF_ELEMENTS][NUMBER_OF_COMPONENTS] = {
 
 GLvoid init_GL_state(void)
 {
+    GLfloat point_size_limits[2];
+    GLfloat point_size;
     register size_t vertex_ID;
 
     for (vertex_ID = 0; vertex_ID < POLYGON_DEPTH; vertex_ID++) {
@@ -32,7 +34,17 @@ GLvoid init_GL_state(void)
     glVertexPointer(NUMBER_OF_COORDINATES, GL_DOUBLE, 0, vertices);
     glColorPointer(NUMBER_OF_COMPONENTS, GL_FLOAT, 0, colors);
 
-    glPointSize(16);
+    glGetFloatv(
+        GL_POINT_SIZE_RANGE,
+        &point_size_limits[0]
+    );
+    point_size = 10;
+    if (point_size < point_size_limits[0])
+        point_size = point_size_limits[0];
+    if (point_size > point_size_limits[1])
+        point_size = point_size_limits[1];
+    glPointSize(point_size);
+
     glAlphaFunc(GL_NOTEQUAL, 0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor(
