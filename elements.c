@@ -11,6 +11,7 @@
 #include "signs.h"
 
 int counts[NUMBER_OF_ELEMENTS];
+static int get_ultimate_element(const int * count_table);
 
 int main(int argc, char ** argv)
 {
@@ -55,6 +56,10 @@ int main(int argc, char ** argv)
     ++counts[element];
     printf("Lunar element    :  %s\n", elements[element]);
 
+    printf(
+        "Elemental concentration:  %s\n",
+        elements[get_ultimate_element(&counts[0])]
+    );
     return 0;
 }
 
@@ -209,4 +214,42 @@ int lunar_element(unsigned long sign)
     default:
         return EARTH; /* unreachable -- used for balance or unknowns */
     }
+}
+
+static int compare_counts(const void * m, const void * n)
+{
+    const int element_m = *(const int *)m;
+    const int element_n = *(const int *)n;
+
+    if (element_m > element_n)
+        return -1; /* Sort array[m] re-ordered before array[n]. */
+    if (element_m < element_n)
+        return +1; /* Sort array[m] re-ordered after array[n]. */
+
+    return 0;
+}
+
+static int get_ultimate_element(const int * count_table)
+{
+    static int results[NUMBER_OF_ELEMENTS];
+    register int element;
+
+    memcpy(results, count_table, NUMBER_OF_ELEMENTS * sizeof(results[0]));
+    qsort(
+        results,
+        NUMBER_OF_ELEMENTS,
+        sizeof(results[0]),
+        compare_counts
+    );
+
+    for (element = EARTH; element < NUMBER_OF_ELEMENTS; element++)
+        if (count_table[element] == results[0])
+            break;
+
+    if (count_table[WATER] == count_table[FIRE]
+     && count_table[WATER] == count_table[METAL]
+     && count_table[WATER] == count_table[WOOD]
+    )
+        element = EARTH; /* If all 4 are balanced, Earth is said to result. */
+    return (element);
 }
