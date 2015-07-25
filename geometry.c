@@ -20,8 +20,6 @@ static const GLfloat colors[NUMBER_OF_ELEMENTS + 3][NUMBER_OF_COMPONENTS] = {
 
 GLvoid init_GL_state(void)
 {
-    GLfloat point_size_limits[2];
-    GLfloat point_size;
     double distance_between_polygon_and_screen_boundary;
     register size_t vertex_ID;
 
@@ -53,17 +51,6 @@ GLvoid init_GL_state(void)
 
     glVertexPointer(NUMBER_OF_COORDINATES, GL_DOUBLE, 0, vertices);
     glColorPointer(NUMBER_OF_COMPONENTS, GL_FLOAT, 0, colors);
-
-    glGetFloatv(
-        GL_POINT_SIZE_RANGE,
-        &point_size_limits[0]
-    );
-    point_size = 10;
-    if (point_size < point_size_limits[0])
-        point_size = point_size_limits[0];
-    if (point_size > point_size_limits[1])
-        point_size = point_size_limits[1];
-    glPointSize(point_size);
 
     glAlphaFunc(GL_NOTEQUAL, 0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -140,6 +127,8 @@ void display(void)
 void reshape(GLsizei width, GLsizei height)
 {
     static GLint viewport[4];
+    GLfloat point_size_limits[2];
+    GLfloat point_size;
     GLsizei new_size;
 
 /*
@@ -147,6 +136,17 @@ void reshape(GLsizei width, GLsizei height)
  * non-square render viewport will make the pentagon disproportionate.
  */
     new_size = (width < height) ? width : height;
+
+    glGetFloatv(
+        GL_POINT_SIZE_RANGE,
+        &point_size_limits[0]
+    );
+    point_size = new_size / 25.f;
+    if (point_size < point_size_limits[0])
+        point_size = point_size_limits[0];
+    if (point_size > point_size_limits[1])
+        point_size = point_size_limits[1];
+    glPointSize(point_size);
 
     glGetIntegerv(
         GL_VIEWPORT,

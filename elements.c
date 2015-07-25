@@ -61,6 +61,7 @@ int main(int argc, char ** argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_ALPHA);
     glutInitWindowSize(256, 256);
     glutCreateWindow("OpenGL Viewport:  Elements");
+    reshape(256, 256);
 
     init_GL_state();
     final_element = get_ultimate_element(&counts[0]);
