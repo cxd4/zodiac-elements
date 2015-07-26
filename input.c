@@ -2,8 +2,39 @@
 #include <stdio.h>
 
 #include <assert.h>
+#include <malloc.h>
 
 #include "input.h"
+#include "geometry.h"
+
+void key_press(int key, int x, int y)
+{
+    static GLsizei viewport[4];
+    FILE * stream;
+    void * pixels;
+
+    switch (key) {
+    case GLUT_KEY_F3:
+        glGetIntegerv(GL_VIEWPORT, &viewport[0]);
+        pixels = malloc(4 * viewport[2] * viewport[3]);
+        glReadPixels(
+            x = 0, /* unused */
+            y = 0, /* unused */
+            viewport[2],
+            viewport[3],
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            pixels
+        );
+        stream = fopen("r8g8b8a8.data", "wb");
+        fwrite(pixels, 4 * viewport[2], viewport[3], stream);
+        fclose(stream);
+        free(pixels);
+        break;
+    }
+    glutPostRedisplay();
+    return;
+}
 
 double carry_in(void)
 {

@@ -67,6 +67,7 @@ int main(int argc, char ** argv)
     final_element = get_ultimate_element(&counts[0]);
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
+    glutSpecialFunc(key_press);
 
     glutMainLoop();
     return 0;
