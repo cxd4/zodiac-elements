@@ -255,10 +255,18 @@ static int get_ultimate_element(const int * count_table)
         if (count_table[element] == results[0])
             break;
 
-    if (count_table[WATER] == count_table[FIRE]
-     && count_table[WATER] == count_table[METAL]
-     && count_table[WATER] == count_table[WOOD]
+    if (count_table[METAL] < 2
+     && count_table[WATER] < 2
+     && count_table[WOOD]  < 2
+     && count_table[FIRE]  < 2
     )
         element = EARTH; /* If all 4 are balanced, Earth is said to result. */
+    else if (results[0] == results[1])
+    {/* If X and Y are tied, and X produces OR controls Y, pick X. */
+        if (count_table[METAL] >= 2)
+            element = (count_table[FIRE]  >= 2) ? FIRE  : METAL;
+        else
+            element = (count_table[WATER] >= 2) ? WATER : WOOD;
+    }
     return (element);
 }
