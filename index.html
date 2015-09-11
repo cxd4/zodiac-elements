@@ -9,62 +9,34 @@
 var vertices = [];
 var opacity = 1.0;
 
-var conducive_colors = [
+var colors = [
     0, 0, 1, opacity,
     1, 1, 1, opacity,
     1, 1, 0, opacity,
     1, 0, 0, opacity,
     0, 1, 0, opacity,
 ];
-var colors_controlling = [
-    1.0, 0.0, 1.0, opacity,
-    1.0, 0.0, 1.0, opacity,
-    0.2, 0.0, 0.2, opacity,
-    0.2, 0.0, 0.2, opacity,
-    0.2, 0.0, 0.2, opacity,
-]; // the "Purple Emperor"
-var colors_control_by = [
-    0.2, 0.0, 0.2, opacity,
-    0.2, 0.0, 0.2, opacity,
-    1.0, 0.0, 1.0, opacity,
-    1.0, 0.0, 1.0, opacity,
-    0.2, 0.0, 0.2, opacity,
-];
-var colors_control = [
-    0.2, 0.0, 0.2, opacity,
-    0.2, 0.0, 0.2, opacity,
-    0.2, 0.0, 0.2, opacity,
-    1.0, 0.0, 1.0, opacity,
-    1.0, 0.0, 1.0, opacity,
-];
 
 function render_pentagram() {
     var i = 0, j;
     var water = 0, metal = 1, earth = 2, fire = 3, wood = 4;
 
-    glColorPointer(4, GL_FLOAT, 0, colors_controlling);
-    glDrawElements(GL_LINES, 4, GL_UNSIGNED_BYTE, [
-        water, fire,
-        metal, wood,
+ // Draw the "Purple Emperor".  Earth controls Water, Water controls Fire, etc.
+    glColor4f(1, 0, 1, 1.00);
+    glDrawElements(GL_LINE_LOOP, 5, GL_UNSIGNED_BYTE, [
+        earth, water, fire, metal, wood
     ]);
-    glColorPointer(4, GL_FLOAT, 0, colors_control_by);
-    glDrawElements(GL_LINES, 4, GL_UNSIGNED_BYTE, [
-        water, earth,
-        metal, fire,
-    ]);
-    glColorPointer(4, GL_FLOAT, 0, colors_control);
-    glDrawElements(GL_LINES, 2, GL_UNSIGNED_BYTE, [earth, wood]);
 
  // Draw the inscribing pentagon.
-    glColorPointer(4, GL_FLOAT, 0, conducive_colors);
+    glColorPointer(4, GL_FLOAT, 0, colors);
+    glEnableClientState(GL_COLOR_ARRAY);
     glDrawArrays(GL_LINE_LOOP, 0, 5);
+    glDisableClientState(GL_COLOR_ARRAY);
 
     while (i < 5) {
         j = 4*i;
-        glColor4f(conducive_colors[j + 0], conducive_colors[j + 1], conducive_colors[j + 2], 1);
-        glDisableClientState(GL_COLOR_ARRAY);
+        glColor4f(colors[j + 0], colors[j + 1], colors[j + 2], 1);
         rounded_point(vertices[4*i + 0], vertices[4*i + 1], 0.045);
-        glEnableClientState(GL_COLOR_ARRAY);
         i += 1;
     }
     glVertexPointer(4, GL_FLOAT, 0, vertices);
@@ -78,8 +50,6 @@ function main_GL() {
         alert("Failed to initialize WebGL.");
         return;
     }
-    glEnableClientState(GL_COLOR_ARRAY);
-    glColor4f(0.5, 0, 0.5, 1);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     while (i < 5) {
@@ -97,8 +67,7 @@ function main_GL() {
     }
     glVertexPointer(4, GL_FLOAT, 0, vertices);
 
-    glColorPointer(4, GL_FLOAT, 0, conducive_colors);
-    glEnableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
     setInterval(render_pentagram, 2000);
     return;
 }
