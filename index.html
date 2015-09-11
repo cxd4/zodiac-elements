@@ -63,7 +63,7 @@ function render_pentagram() {
         j = 4*i;
         glColor4f(conducive_colors[j + 0], conducive_colors[j + 1], conducive_colors[j + 2], 1);
         glDisableClientState(GL_COLOR_ARRAY);
-        rounded_point(vertices[4*i + 0], vertices[4*i + 1], 0.05);
+        rounded_point(vertices[4*i + 0], vertices[4*i + 1], 0.045);
         glEnableClientState(GL_COLOR_ARRAY);
         i += 1;
     }
