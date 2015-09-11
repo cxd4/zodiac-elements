@@ -4,6 +4,130 @@
 <head>
 <title>The Five Elements</title>
 <meta charset="utf-8">
+<script type="text/javascript" src="https://rawgit.com/cxd4/OpenGL-js/master/gl.js"></script>
+<script type="text/javascript">
+var vertices = [];
+var opacity = 1.0;
+
+var conducive_colors = [
+    0, 0, 1, opacity,
+    1, 1, 1, opacity,
+    1, 1, 0, opacity,
+    1, 0, 0, opacity,
+    0, 1, 0, opacity,
+];
+var colors_controlling = [
+    1.0, 0.0, 1.0, opacity,
+    1.0, 0.0, 1.0, opacity,
+    0.2, 0.0, 0.2, opacity,
+    0.2, 0.0, 0.2, opacity,
+    0.2, 0.0, 0.2, opacity,
+]; // the "Purple Emperor"
+var colors_control_by = [
+    0.2, 0.0, 0.2, opacity,
+    0.2, 0.0, 0.2, opacity,
+    1.0, 0.0, 1.0, opacity,
+    1.0, 0.0, 1.0, opacity,
+    0.2, 0.0, 0.2, opacity,
+];
+var colors_control = [
+    0.2, 0.0, 0.2, opacity,
+    0.2, 0.0, 0.2, opacity,
+    0.2, 0.0, 0.2, opacity,
+    1.0, 0.0, 1.0, opacity,
+    1.0, 0.0, 1.0, opacity,
+];
+
+function render_pentagram() {
+    var i = 0, j;
+    var water = 0, metal = 1, earth = 2, fire = 3, wood = 4;
+
+    glColorPointer(4, GL_FLOAT, 0, colors_controlling);
+    glDrawElements(GL_LINES, 4, GL_UNSIGNED_BYTE, [
+        water, fire,
+        metal, wood,
+    ]);
+    glColorPointer(4, GL_FLOAT, 0, colors_control_by);
+    glDrawElements(GL_LINES, 4, GL_UNSIGNED_BYTE, [
+        water, earth,
+        metal, fire,
+    ]);
+    glColorPointer(4, GL_FLOAT, 0, colors_control);
+    glDrawElements(GL_LINES, 2, GL_UNSIGNED_BYTE, [earth, wood]);
+
+ // Draw the inscribing pentagon.
+    glColorPointer(4, GL_FLOAT, 0, conducive_colors);
+    glDrawArrays(GL_LINE_LOOP, 0, 5);
+
+    while (i < 5) {
+        j = 4*i;
+        glColor4f(conducive_colors[j + 0], conducive_colors[j + 1], conducive_colors[j + 2], 1);
+        glDisableClientState(GL_COLOR_ARRAY);
+        rounded_point(vertices[4*i + 0], vertices[4*i + 1], 0.05);
+        glEnableClientState(GL_COLOR_ARRAY);
+        i += 1;
+    }
+    glVertexPointer(4, GL_FLOAT, 0, vertices);
+    return;
+}
+
+function main_GL() {
+    var i = 0;
+
+    if (GL_get_context(document, "elements") === null) {
+        alert("Failed to initialize WebGL.");
+        return;
+    }
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColor4f(0.5, 0, 0.5, 1);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    while (i < 5) {
+        var degrees = 72*i + 90;
+        var radians = Math.PI/180 * degrees;
+
+        vertices[4*i + 0] = Math.cos(radians);
+        vertices[4*i + 1] = Math.sin(radians);
+        vertices[4*i + 2] = 0.0;
+        vertices[4*i + 3] = 1.0;
+
+     // Vertically offset the points halfway down the free canvas space.
+        vertices[4*i + 1] -= 0.190983005625 / 2;
+        i += 1;
+    }
+    vertices[0] = 0; // JS precision fix
+    glVertexPointer(4, GL_FLOAT, 0, vertices);
+
+    glColorPointer(4, GL_FLOAT, 0, conducive_colors);
+    glEnableClientState(GL_COLOR_ARRAY);
+    setInterval(render_pentagram, 2000);
+    return;
+}
+
+// In modern OpenGL, smooth and rounded points are deprecated.
+// I will just have to create a custom function to draw shaded circles.
+function rounded_point(x, y, radius) {
+    var circle = [];
+    var degrees, radians;
+    var i = 0, precision = 90;
+
+    circle[0] = x;
+    circle[1] = y;
+    while (i < precision) {
+        degrees = i * (360 / precision);
+        radians = (Math.PI / 180) * degrees;
+
+        circle[2*(i + 1) + 0] = x + radius*Math.cos(radians);
+        circle[2*(i + 1) + 1] = y + radius*Math.sin(radians);
+        i += 1;
+    }
+    circle[2*(i + 1) + 0] = circle[2*1 + 0];
+    circle[2*(i + 1) + 1] = circle[2*1 + 1];
+    glVertexPointer(2, GL_FLOAT, 0, circle);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, precision + 1 + 1);
+    return;
+}
+</script>
 </head>
 
 <style type="text/css">
@@ -16,8 +140,8 @@ body {
 a:link {color:  #00FFFF; }
 a:visited {color:  #008080; }
 </style>
-<body>
-<canvas id="elements" width="512" height="512">
+<body onload="main_GL()">
+<canvas id="elements" width="1024" height="1024">
 Your browser doesn't appear to support the <code>&lt;CANVAS&gt;</code> element.
 </canvas>
 
