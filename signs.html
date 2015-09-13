@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>The Twelve Signs</title>
+<meta charset="utf-8">
+<script type="text/javascript" src="https://rawgit.com/cxd4/OpenGL-js/master/gl.js"></script>
+<script type="text/javascript">
+var vertices = [];
+var colors = [
+    1, 0, 0, // fire  (red)    #1 Aries;  #9 Sagittarius/Rat (23:00 to 01:00)
+    1, 1, 0, // earth (yellow) #2 Taurus; #10 Capricorn/Ox   (01:00 to 03:00)
+    0, 1, 0, //        green   #3 Gemini; #11 Aquarius/Tiger (03:00 to 05:00)
+    0, 0, 1, // water (blue)   #4 Cancer; #12 Pisces/Rabbit  (05:00 to 07:00)
+             // ...
+    1, 0, 0,
+    1, 1, 0,
+    0, 1, 0,
+    0, 0, 1,
+
+    1, 0, 0,
+    1, 1, 0,
+    0, 1, 0,
+    0, 0, 1,
+];
+
+var
+    Rat     =  0,
+    Ox      =  1,
+    Tiger   =  2,
+    Rabbit  =  3,
+
+    Dragon  =  4,
+    Snake   =  5,
+    Horse   =  6,
+    Sheep   =  7,
+
+    Monkey  =  8,
+    Rooster =  9,
+    Dog     = 10,
+    Boar    = 11;
+
+function render_dodecagram() {
+    var i = 0, j;
+
+ // Draw the dodecahedron connecting the ordered 12 signs of the zodiac.
+    glDrawArrays(GL_LINE_LOOP, 0, 12);
+
+ // Draw the 4 intersecting compatibility triangles forming our dodecagram.
+    glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_BYTE, [Rat, Dragon, Monkey]);
+    glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_BYTE, [Ox, Snake, Rooster]);
+    glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_BYTE, [Tiger, Horse, Dog]);
+    glDrawElements(GL_LINE_LOOP, 3, GL_UNSIGNED_BYTE, [Rabbit, Sheep, Boar]);
+
+    glDisableClientState(GL_COLOR_ARRAY);
+    while (i < 12) {
+        glColor4f(colors[3*i + 0], colors[3*i + 1], colors[3*i + 2], 1);
+        rounded_point(vertices[4*i + 0], vertices[4*i + 1], 0.0333);
+        i += 1;
+    }
+    glEnableClientState(GL_COLOR_ARRAY);
+
+    glVertexPointer(4, GL_FLOAT, 0, vertices);
+    return;
+}
+
+function main_GL() {
+    var i = 0;
+
+    if (GL_get_context(document, "signs") === null) {
+        alert("Failed to initialize WebGL.");
+        return;
+    }
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    while (i < 12) {
+        var degrees = (90 - 15 - 30*i) % 360;
+        var radians = Math.PI/180 * degrees;
+
+        vertices[4*i + 0] = Math.cos(radians);
+        vertices[4*i + 1] = Math.sin(radians);
+        vertices[4*i + 2] = 0.0;
+        vertices[4*i + 3] = 1.0;
+        i += 1;
+    }
+    glVertexPointer(4, GL_FLOAT, 0, vertices);
+    glColorPointer(3, GL_FLOAT, 0, colors);
+
+    glEnableClientState(GL_COLOR_ARRAY);
+    setInterval(render_dodecagram, 1000);
+    return;
+}
+
+// In modern OpenGL, smooth and rounded points are deprecated.
+// I will just have to create a custom function to draw shaded circles.
+function rounded_point(x, y, radius) {
+    var circle = [];
+    var degrees, radians;
+    var i = 0, precision = 90;
+
+    circle[0] = x;
+    circle[1] = y;
+    while (i < precision) {
+        degrees = i * (360 / precision);
+        radians = (Math.PI / 180) * degrees;
+
+        circle[2*(i + 1) + 0] = x + radius*Math.cos(radians);
+        circle[2*(i + 1) + 1] = y + radius*Math.sin(radians);
+        i += 1;
+    }
+    circle[2*(i + 1) + 0] = circle[2*1 + 0];
+    circle[2*(i + 1) + 1] = circle[2*1 + 1];
+    glVertexPointer(2, GL_FLOAT, 0, circle);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, precision + 1 + 1);
+    return;
+}
+</script>
+</head>
+
+<style type="text/css">
+body {
+    background-color:  #000000;
+    color           :  #00FF00;
+    font-family     :  Courier New, Courier, monospace;
+    white-space     :  pre-wrap;
+}
+a:link {color:  #00FFFF; }
+a:visited {color:  #008080; }
+</style>
+<body onload="main_GL()">
+<canvas id="signs" width="1024" height="1024">
+Your browser doesn't appear to support the <code>&lt;CANVAS&gt;</code> element.
+</canvas>
+
+This is only a test to draw a twelve-sided astrological diagram featuring signs, instead of elements.
+For the full zodiac calculator and the native C renderer, visit:  <a href="https://github.com/cxd4/zodiac-elements/tree/master">https://github.com/cxd4/zodiac-elements</a>
+
+The names and identities of these twelve elements vary between different zodiacs.  In Western astrology, they are of the Aries-Pisces range; in Eastern astrology, they are typically of the Rat-Pig range.  One thing does hold in common for both interpretations, however:  Every alternating fourth sign is said to be compatible and of the same zodiacal element (or tribune, in the Chinese zodiac), while every alternating sixth sign (that is, polar opposites of the geometric circle) are said to have a more unique relationship (normally explained as bad or poor).
+
+Of course, the elemental interpretation does vary.  In the Chinese zodiac, there are five elements, but there are only four elements in Western astrology:  Fire, Earth, Air and Water.  In the former, every contiguous three animal signs have the same "fixed element"; in the latter, it is every compatible and alternating fourth sign that shares the same element.  Since the former's case is already visually documented enough in the <a href="index.html">elemental counterpart</a> to this WebGL visual rendering, we use the latter's alternating colors pattern for the one on this page.
+</body>
+</html>
