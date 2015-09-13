@@ -53,7 +53,7 @@ function main_GL() {
 
     glEnableClientState(GL_VERTEX_ARRAY);
     while (i < 5) {
-        var degrees = 72*i + 90;
+        var degrees = (72*i + 90) % 360;
         var radians = Math.PI/180 * degrees;
 
         vertices[4*i + 0] = Math.cos(radians);
