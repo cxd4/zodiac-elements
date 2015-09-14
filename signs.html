@@ -13,15 +13,6 @@ var colors = [
     0, 1, 0, //        green   #3 Gemini; #11 Aquarius/Tiger (03:00 to 05:00)
     0, 0, 1, // water (blue)   #4 Cancer; #12 Pisces/Rabbit  (05:00 to 07:00)
              // ...
-    1, 0, 0,
-    1, 1, 0,
-    0, 1, 0,
-    0, 0, 1,
-
-    1, 0, 0,
-    1, 1, 0,
-    0, 1, 0,
-    0, 0, 1,
 ];
 
 var
@@ -84,9 +75,15 @@ function main_GL() {
         i += 1;
     }
     glVertexPointer(4, GL_FLOAT, 0, vertices);
-    glColorPointer(3, GL_FLOAT, 0, colors);
 
+    for (i = 4; i < 12; i += 1) {
+        colors[3*i + 0] = colors[3*(i%4) + 0];
+        colors[3*i + 1] = colors[3*(i%4) + 1];
+        colors[3*i + 2] = colors[3*(i%4) + 2];
+    }
+    glColorPointer(3, GL_FLOAT, 0, colors);
     glEnableClientState(GL_COLOR_ARRAY);
+
     setInterval(render_dodecagram, 1000);
     return;
 }
