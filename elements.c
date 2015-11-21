@@ -8,6 +8,12 @@
 #include "input.h"
 #include "signs.h"
 
+/*
+ * one complete generation of either zodiac:
+ * 5 elements * 12 signs = 60 unique yin-yang combinations
+ */
+static const int zodiacal_period = NUMBER_OF_ELEMENTS * NUMBER_OF_SIGNS;
+
 int counts[NUMBER_OF_ELEMENTS];
 int final_element = EARTH;
 
@@ -75,21 +81,26 @@ int main(int argc, char ** argv)
 
 int primary_element(long year)
 {
-    switch ((10 + year%10) % 10) { /* Year ends with.... */
-    case 0:
-    case 1:
+    const unsigned long year_AD =
+        (year < 0)
+      ? (unsigned long)(year%zodiacal_period + zodiacal_period)
+      : (unsigned long)(year)
+    ;
+    switch (year_AD % 10) {
+    case 0: /* Yang Metal */
+    case 1: /* Yin Metal */
         return METAL;
-    case 2:
-    case 3:
+    case 2: /* Yang Water */
+    case 3: /* Yin Water */
         return WATER;
-    case 4:
-    case 5:
+    case 4: /* Yang Wood */
+    case 5: /* Yin Wood */
         return WOOD;
-    case 6:
-    case 7:
+    case 6: /* Yang Fire */
+    case 7: /* Yin Fire */
         return FIRE;
-    case 8:
-    case 9:
+    case 8: /* Yang Earth */
+    case 9: /* Yin Earth */
 
 /*
  * Earth is the "default" element because it represents the composure of all

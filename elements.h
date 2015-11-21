@@ -2,6 +2,13 @@
 #define _ELEMENTS_H_
 
 enum {
+    YANG,
+    YIN,
+
+    YIN_YANG
+};
+
+enum {
     EARTH,
     WATER,
     FIRE,
