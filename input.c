@@ -5,7 +5,6 @@
 #include <malloc.h>
 
 #include "input.h"
-#include "geometry.h"
 
 void key_press(int key, int x, int y)
 {
