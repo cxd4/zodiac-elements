@@ -18,14 +18,6 @@ enum {
     NUMBER_OF_ELEMENTS
 };
 
-static const char* elements[NUMBER_OF_ELEMENTS] = {
-    "Earth",
-    "Water",
-    "Fire",
-    "Wind", /* "metal" in the Chinese Wu Xing */
-    "Void", /* "wood" in the Chinese Wu Xing */
-};
-
 /*
  * the conducive cycle of the five elements:
  *     1.  Metal supports/produces Water.

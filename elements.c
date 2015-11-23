@@ -18,6 +18,14 @@ static const int zodiacal_period = NUMBER_OF_ELEMENTS * NUMBER_OF_SIGNS;
 int counts[NUMBER_OF_ELEMENTS];
 int final_element = EARTH;
 
+static const char* elements[NUMBER_OF_ELEMENTS] = {
+    "Earth",
+    "Water",
+    "Fire",
+    "Wind", /* "metal" in the Chinese Wu Xing */
+    "Void", /* "wood" in the Chinese Wu Xing */
+};
+
 static int get_ultimate_element(const int * count_table);
 
 int main(int argc, char ** argv)
