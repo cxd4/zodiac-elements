@@ -85,6 +85,8 @@ function main_GL() {
     glVertexPointer(4, GL_FLOAT, 0, vertices);
 
     glDisableClientState(GL_COLOR_ARRAY);
+
+    render_pentagram();
     setInterval(render_pentagram, 2000);
     return;
 }
