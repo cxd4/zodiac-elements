@@ -17,13 +17,7 @@ a:visited {color:  #008080; }
 
 <script type="text/javascript" src="http://cxd4.github.io/OpenGL-js/gl.js"></script>
 <script type="text/javascript">
-var vertices = [
-     0.000000000000000000000000000000, +1.000000000000000000000000000000, 0, 1,
-    -0.951056516295153572116439333379, +0.309016994374947424102293417183, 0, 1,
-    -0.587785252292473129168705954639, -0.809016994374947424102293417183, 0, 1,
-    +0.587785252292473129168705954639, -0.809016994374947424102293417183, 0, 1,
-    +0.951056516295153572116439333379, +0.309016994374947424102293417183, 0, 1,
-];
+var vertices = [];
 var opacity = 1.0;
 
 var colors = [
@@ -73,8 +67,8 @@ function main_GL() {
         var degrees = (72*i + 90) % 360;
         var radians = Math.PI/180 * degrees;
 
-     // vertices[4*i + 0] = Math.cos(radians);
-     // vertices[4*i + 1] = Math.sin(radians);
+        vertices[4*i + 0] = Math.cos(radians);
+        vertices[4*i + 1] = Math.sin(radians);
         vertices[4*i + 2] = 0.0;
         vertices[4*i + 3] = 1.0;
 
