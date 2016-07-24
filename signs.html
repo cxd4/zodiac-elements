@@ -36,6 +36,8 @@ var
 function render_dodecagram() {
     var i = 0, j;
 
+    glClear(GL_COLOR_BUFFER_BIT); // Erase previous semi-transparent frames.
+
  // Draw the dodecahedron connecting the ordered 12 signs of the zodiac.
     glDrawArrays(GL_LINE_LOOP, 0, 12);
     glEnable(GL_BLEND);
