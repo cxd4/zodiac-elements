@@ -84,7 +84,8 @@ function main_GL() {
     glColorPointer(4, GL_FLOAT, 0, colors);
     glEnableClientState(GL_COLOR_ARRAY);
 
-    setInterval(render_dodecagram, 1000);
+    render_dodecagram();
+    setInterval(render_dodecagram, 5000);
     return;
 }
 </script>
